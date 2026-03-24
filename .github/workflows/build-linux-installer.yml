@@ -31,40 +31,14 @@ jobs:
             TAG="${TAG:-v0.0.0}"
           fi
           SHORT_VERSION="${TAG#v}"
-          FILE_NAME="abyss-setup-v${SHORT_VERSION}.deb"
+          FILE_NAME="abyss-setup-v${SHORT_VERSION}.sh"
           echo "SHORT_VERSION=${SHORT_VERSION}" >> "$GITHUB_OUTPUT"
           echo "FILE_NAME=${FILE_NAME}"         >> "$GITHUB_OUTPUT"
 
-      - name: Build .deb package
+      - name: Prepare release asset
         run: |
-          PKG="abyss-setup_${{ steps.version.outputs.SHORT_VERSION }}"
-          mkdir -p "${PKG}/DEBIAN"
-          mkdir -p "${PKG}/usr/local/bin"
-
-          # Install setup.sh as abyss-setup
-          cp setup.sh "${PKG}/usr/local/bin/abyss-setup"
-          chmod 755   "${PKG}/usr/local/bin/abyss-setup"
-
-          # Write control file
-          cat > "${PKG}/DEBIAN/control" << EOF
-          Package: abyss-setup
-          Version: ${{ steps.version.outputs.SHORT_VERSION }}
-          Section: utils
-          Priority: optional
-          Architecture: all
-          Depends: bash, curl, python3
-          Maintainer: AumGupta <https://github.com/AumGupta>
-          Homepage: https://github.com/AumGupta/abyss-jellyfin
-          Description: Installer for Abyss - a clean minimal Jellyfin theme
-           Installs and configures the Abyss theme for Jellyfin,
-           including CSS, display preferences, and the Spotlight add-on.
-          EOF
-
-          # Strip leading whitespace from heredoc
-          sed -i 's/^          //' "${PKG}/DEBIAN/control"
-
-          dpkg-deb --build --root-owner-group "${PKG}"
-          mv "${PKG}.deb" "${{ steps.version.outputs.FILE_NAME }}"
+          cp setup.sh "${{ steps.version.outputs.FILE_NAME }}"
+          chmod +x    "${{ steps.version.outputs.FILE_NAME }}"
 
       - name: Upload to latest release
         if: github.event_name == 'push'
