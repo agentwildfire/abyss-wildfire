@@ -8,5 +8,5 @@
 Custom CSS:
 
 ```
-@import url('https://cdn.jsdelivr.net/agentwildfire/abyss-wildfire/blob/main/theme.css');
+@import url('https://github.com/agentwildfire/abyss-wildfire/blob/c962bb3742cf58a05234da58e9d0d70122afd56e/theme.css');
 ```
