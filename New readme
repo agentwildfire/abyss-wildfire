@@ -1,0 +1,9 @@
+---
+
+## Installing
+
+Custom CSS:
+
+```
+@import url('https://cdn.jsdelivr.net/agentwildfire/abyss-wildfire/blob/main/theme.css');
+```
